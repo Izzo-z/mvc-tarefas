@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= tituloAba %></title>
+</head>
+<body>
+    
+    <h1><%= tituloPagina %></h1>
+    <form action="/nova-tarefa" method="post">
+        <input type="hidden" name="id_tarefa" value="<%= id_tarefa %>">
+
+        <label for="tarefa"> <%=tarefa.nome_tarefa %></label> <br>
+        <textarea name="tarefa" id="tarefa"></textarea> <br>
+        <label for="prazo">Prazo:</label> <br>
+        <input type="date" name="prazo" id="prazo" 
+        value="<%= moment(tarefa.prazo_tarefa).format("YYYY-MM-DD") %>">
+         <br>
+        <label for="situacao">Situação:</label> <br>
+        <%=
+            let selecionado = ["","","","",""]
+            selecionando = [tarefa.situacao_tarefa] = "select"
+        %>
+        <select name="situacao" id="situacao">
+            <option <%= selecionado[0] %> value="0">Cancelada</option>
+            <option <%= selecionado[1] %> value="1">Pendente</option>
+            <option <%= selecionado[2] %> value="2">Inicada</option>
+            <option <%= selecionado[3] %> value="3">Finalizada</option>
+            <option <%= selecionado[4] %> value="4">Atrasada</option>
+        </select> <br>
+        <button type="submit">Salvar</button>
+    </form>
+
+</body>
+</html>
