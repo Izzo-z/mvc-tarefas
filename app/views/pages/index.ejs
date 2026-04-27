@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Modelo App Node </title>
+    <title>Lista de Tarefas</title>
 </head>
-
 <body>
-   <h1>Lista de Tarefas</h1>
-   <button type="button" onclick="window.location='/nova-tarefa'" >Nova Tarefa</button> 
-   <br>
-   <br>
-   <table>
+    <h1>Lista de Tarefas</h1>
+    <button type="button" onclick="window.location='/nova-tarefa'">Nova Tarefa</button>
+    <br><br>
+
+    <table border="1" cellpadding="6">
         <thead>
             <tr>
                 <th>Código</th>
@@ -25,32 +23,35 @@
         </thead>
         <tbody>
         <%
-            let situacao = ["Cancelada","Pendente","Iniciada","Finalizada","Atrasada"]
-            if(linhasTabela){
-                linhasTabela.forEach( (item)=>{      
+            let situacao = ["Cancelada","Pendente","Iniciada","Finalizada","Atrasada"];
+            if(linhasTabela && linhasTabela.length > 0){
+                linhasTabela.forEach((item) => {
         %>
             <tr>
                 <td><%= item.id_tarefa %></td>
                 <td><%= item.nome_tarefa %></td>
                 <td><%= moment(item.prazo_tarefa).format('L') %></td>
                 <td><%= situacao[item.situacao_tarefa] %></td>
-                <td><a href="/editar?id=<%= item.id_tarefas %>">Editar</a></td>
-            </tr>         
+                <td>
+                    <a href="/editar?id=<%= item.id_tarefa %>">Editar</a>
+                    &nbsp;|&nbsp;
+                    <a href="/excluir-logico?id=<%= item.id_tarefa %>"
+                       onclick="return confirm('Deseja inativar a tarefa: <%= item.nome_tarefa %>?')">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
         <%
                 });
-            }else{
-        %>    
-          <tr colspan="4">
-            <td>Sem tarefas para exibir</td>
-          </tr>    
+            } else {
+        %>
+            <tr>
+                <td colspan="5">Sem tarefas para exibir</td>
+            </tr>
         <%
             }
         %>
-        </tbody>    
+        </tbody>
     </table>
-
 </body>
-
 </html>
-
-<!-- moment  usar para formatar a data em pt-br -->

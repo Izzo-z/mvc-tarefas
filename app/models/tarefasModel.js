@@ -31,6 +31,7 @@ const tarefasModel = {
             return erro;
         }
     },
+
     create: async (campos) => {
         // campos é um json no seguinte formato
         // { 
@@ -41,18 +42,16 @@ const tarefasModel = {
         try {
             const [resultado] = await
                 pool.query("insert into tarefas(`nome_tarefa`,`prazo_tarefa`,`situacao_tarefa`) "
-                    +" values(?,?,?)",
+                    + " values(?,?,?)",
                     [campos.nome, campos.prazo, campos.situacao]
-                )
-                return resultado;
+                );
+            return resultado;
         } catch (erro) {
             return erro;
         }
-
     },
 
-    // faltam os métodos: update, delete fisico e delete lógico
-    update: async (dados)=>{
+    update: async (dados) => {
         // dados é um json no seguinte formato
         // { 
         // id: 9
@@ -60,24 +59,41 @@ const tarefasModel = {
         // prazo:"9999-99-99"
         // situacao:9
         // }
-            try {
+        try {
             const [resultado] = await
-                pool.query("update tarefas set `nome_tarefa`= ?, " + 
-                    " `prazo_tarefa` = ?, `situacao_tarefa` = ? "+
+                pool.query("update tarefas set `nome_tarefa`= ?, " +
+                    " `prazo_tarefa` = ?, `situacao_tarefa` = ? " +
                     " where id_tarefa = ?",
                     [dados.nome, dados.prazo, dados.situacao, dados.id]
-                )
-                return resultado;
+                );
+            return resultado;
         } catch (erro) {
             return erro;
         }
-    
-    
-    
+    },
+
+    // ✅ DELETE FÍSICO - remove o registro permanentemente do banco
+    deleteFisico: async (id) => {
+        try {
+            const [resultado] = await
+                pool.query("delete from tarefas where id_tarefa = ?", [id]);
+            return resultado;
+        } catch (erro) {
+            return erro;
+        }
+    },
+
+    // ✅ DELETE LÓGICO - apenas marca status_tarefa = 0 (inativa a tarefa)
+    deleteLogico: async (id) => {
+        try {
+            const [resultado] = await
+                pool.query("update tarefas set status_tarefa = 0 where id_tarefa = ?", [id]);
+            return resultado;
+        } catch (erro) {
+            return erro;
+        }
     }
 
-}
+};
 
-
-
-module.exports = {tarefasModel};
+module.exports = { tarefasModel };
